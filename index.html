@@ -1,1 +1,738 @@
-<!doctype html> <html>   <head>     <title>This IS NOT the title of the webpage!</title>   </head>   <body>     <p>This is an UPDATED example paragraph. Anything in the <strong>body</strong> tag will appear on the page, just like this <strong>p</strong> tag and its contents.</p>   </body>  </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zora</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="zora-tab-logo.png?v=3">
+    <link rel="icon" type="image/png" sizes="16x16" href="zora-tab-logo.png?v=3">
+    <link rel="apple-touch-icon" sizes="180x180" href="zora-tab-logo.png?v=3">
+    <link rel="shortcut icon" href="zora-tab-logo.png?v=5">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,700;1,400&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Montserrat', sans-serif; }
+        h1, h2, h3, h4 { font-family: 'Merriweather', serif; }
+
+        .shevitsa-strip {
+            height: 12px;
+            width: 100%;
+            background-image: 
+                linear-gradient(45deg, #D62612 25%, transparent 25%), 
+                linear-gradient(-45deg, #D62612 25%, transparent 25%), 
+                linear-gradient(45deg, transparent 75%, #00966E 75%), 
+                linear-gradient(-45deg, transparent 75%, #00966E 75%);
+            background-size: 20px 20px;
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* --- LANGUAGE BUTTON STYLES (MATCHING SCREENSHOT) --- */
+        .lang-btn { 
+            background-color: #ffffff;
+            border: 1px solid #d1d5db; /* Light grey border */
+            color: #374151; /* Dark grey text */
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.875rem; /* 14px */
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .lang-btn:hover {
+            border-color: #D62612;
+            color: #D62612;
+        }
+        
+        /* ACTIVE STATE: Solid Red Background, White Text */
+        .lang-btn.active { 
+            background-color: #D62612 !important; 
+            color: #ffffff !important; 
+            border-color: #D62612 !important; 
+        }
+
+        /* Modal Animation */
+        .modal { transition: opacity 0.25s ease; }
+        body.modal-active { overflow: hidden; }
+        
+        /* Card Hover Effect */
+        .schedule-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .schedule-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800 flex flex-col min-h-screen">
+
+    <div class="shevitsa-strip fixed top-0 z-50"></div>
+
+    <!-- Navigation -->
+    <nav class="bg-white/95 backdrop-blur-sm fixed w-full z-40 top-[12px] shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-24 items-center">
+                <div class="flex items-center gap-4">
+                    <img src="zora-logo.png" alt="Zora Logo" class="h-16 w-16 object-cover rounded-full">
+                    <div class="text-lg md:text-xl font-bold uppercase tracking-wide text-stone-800" data-i18n="header_title">
+                        ZORA THE HAGUE
+                    </div>
+                </div>
+                <!-- Language Buttons -->
+                <div class="flex items-center space-x-2">
+                    <!-- Cleaned classes to rely on CSS -->
+                    <button onclick="changeLanguage('bg')" class="lang-btn" id="btn-bg">BG</button>
+                    <button onclick="changeLanguage('nl')" class="lang-btn" id="btn-nl">NL</button>
+                    <button onclick="changeLanguage('en')" class="lang-btn" id="btn-en">EN</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative pt-36 pb-20 lg:pt-52 lg:pb-32 overflow-hidden">
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-green-50 rounded-full blur-3xl opacity-60"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 w-72 h-72 bg-red-50 rounded-full blur-3xl opacity-60"></div>
+
+        <div class="max-w-6xl mx-auto px-4 relative z-10 text-center">
+            <p class="text-green-700 font-semibold tracking-widest uppercase text-sm mb-4" data-i18n="hero_subtitle">Bulgarian Folk Dances</p>
+            <h1 class="text-5xl md:text-7xl font-bold text-stone-900 mb-8 leading-tight" data-i18n="hero_title">
+                Dance with Heart,<br>Live Tradition.
+            </h1>
+            
+            <div class="inline-flex items-center bg-white border border-stone-200 shadow-xl rounded-full px-6 py-3 mb-10">
+                <span class="flex h-3 w-3 relative mr-3">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                </span>
+                <span class="text-stone-600 font-medium text-sm" id="next-class-display">Loading...</span>
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button onclick="openModal('Trial Lesson')" class="bg-red-600 text-white px-8 py-4 rounded shadow-lg hover:bg-red-700 transition font-bold uppercase tracking-wide transform hover:scale-105" data-i18n="btn_trial">
+                    Trial Lesson
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row gap-12 items-center">
+                <!-- Image Side -->
+                <div class="w-full md:w-1/2">
+                    <img src="zora-dancers.png" alt="Zora Dancers" class="rounded-lg shadow-2xl w-full h-auto object-contain">
+                </div>
+                <!-- Text Side -->
+                <div class="w-full md:w-1/2">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6 text-stone-900" data-i18n="about_title">Welcome to the Zora Family</h2>
+                    <p class="text-lg text-stone-600 mb-6 leading-relaxed" data-i18n="about_text1">
+                        A group for all lovers, dancers, or simply amateurs of Bulgarian folk dances and horo in The Hague, Netherlands.
+                    </p>
+                    <p class="text-lg text-stone-600 mb-8 leading-relaxed italic border-l-4 border-red-500 pl-4" data-i18n="about_quote">
+                        "Outside it is cold, but inside our hall is full of warmth, coziness, and smiles."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Schedule Section -->
+    <section id="schedule" class="py-24 bg-stone-100">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-2" data-i18n="schedule_title">Weekly Rehearsals</h2>
+                <div class="h-1 w-20 bg-red-600 mx-auto"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Friday -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col h-full schedule-card">
+                    <div class="bg-stone-800 text-white p-6 text-center">
+                        <h3 class="text-xl font-bold uppercase tracking-wide" data-i18n="day_friday">Friday</h3>
+                        <p class="text-stone-400 font-mono mt-1">19:00 - 21:00</p>
+                    </div>
+                    <div class="p-8 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h4 class="text-xl font-bold text-stone-900 mb-3 border-b border-stone-100 pb-3" data-i18n="group_adults_title">Adults Group</h4>
+                            <p class="text-stone-600 mb-4" data-i18n="group_adults_desc">Regular rehearsals for all levels.</p>
+                        </div>
+                        <div class="mt-4 text-sm">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Het+Koorenhuis+Prinsengracht+27+Den+Haag" target="_blank" class="group">
+                                <span class="font-bold text-stone-800 block">Het Koorenhuis</span>
+                                <span class="text-stone-500 block">Prinsengracht 27</span>
+                                <span class="text-stone-400 text-xs block">Hall 1.16</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sunday Kids -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col h-full schedule-card">
+                    <div class="bg-green-700 text-white p-6 text-center">
+                        <h3 class="text-xl font-bold uppercase tracking-wide" data-i18n="day_sunday">Sunday</h3>
+                        <p class="text-green-100 font-mono mt-1">10:15 - 11:00</p>
+                    </div>
+                    <div class="p-8 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h4 class="text-xl font-bold text-stone-900 mb-3 border-b border-stone-100 pb-3" data-i18n="group_kids_title">Kids Group</h4>
+                            <p class="text-stone-600 mb-4" data-i18n="group_kids_desc">Fun and education for the little ones.</p>
+                        </div>
+                        <div class="mt-4 text-sm">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Genemuidenstraat+208A+Den+Haag" target="_blank" class="group">
+                                <span class="font-bold text-stone-800 block">Nitsanim</span>
+                                <span class="text-stone-500 block">Genemuidenstraat 208A</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sunday Adults -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col h-full schedule-card">
+                    <div class="bg-red-700 text-white p-6 text-center">
+                        <h3 class="text-xl font-bold uppercase tracking-wide" data-i18n="day_sunday">Sunday</h3>
+                        <p class="text-red-100 font-mono mt-1">11:00 - 13:00</p>
+                    </div>
+                    <div class="p-8 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h4 class="text-xl font-bold text-stone-900 mb-3 border-b border-stone-100 pb-3" data-i18n="group_mixed_title">Adults Group</h4>
+                            <p class="text-stone-600 mb-4" data-i18n="group_mixed_desc">Regular rehearsals for all levels.</p>
+                        </div>
+                        <div class="mt-4 text-sm">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Genemuidenstraat+208A+Den+Haag" target="_blank" class="group">
+                                <span class="font-bold text-stone-800 block">Nitsanim</span>
+                                <span class="text-stone-500 block">Genemuidenstraat 208A</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section (Dynamic) -->
+    <section id="events" class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row gap-12">
+                <!-- Upcoming Container -->
+                <div class="flex-1">
+                    <h3 class="text-2xl font-bold mb-6 flex items-center gap-2 text-stone-800">
+                        <i data-lucide="calendar-days" class="text-red-600"></i>
+                        <span data-i18n="events_upcoming">Upcoming Events</span>
+                    </h3>
+                    <div id="upcoming-events-container" class="space-y-6">
+                        <!-- JS will inject events here -->
+                    </div>
+                </div>
+                <!-- Past Container -->
+                <div class="flex-1">
+                    <h3 class="text-2xl font-bold mb-6 flex items-center gap-2 text-stone-800">
+                        <i data-lucide="history" class="text-stone-400"></i>
+                        <span data-i18n="events_past">Past Events</span>
+                    </h3>
+                    <div id="past-events-container" class="space-y-6 opacity-75">
+                        <!-- JS will inject events here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-stone-900 text-stone-400 py-12">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-sm text-stone-500">
+                &copy; 2026 Zora Den Haag
+            </div>
+            <div class="flex flex-wrap justify-center gap-6">
+                <a href="https://www.instagram.com/zoradenhaag" target="_blank" class="hover:text-pink-500 transition flex items-center gap-2">
+                    <i data-lucide="instagram" class="w-5 h-5"></i>
+                    <span class="hidden md:inline text-xs">Instagram</span>
+                </a>
+                <a href="https://www.facebook.com/zoradenhaag" target="_blank" class="hover:text-blue-500 transition flex items-center gap-2">
+                    <i data-lucide="facebook" class="w-5 h-5"></i>
+                    <span class="hidden md:inline text-xs">Facebook</span>
+                </a>
+                <a href="https://www.youtube.com/@ZoraDansgroep" target="_blank" class="hover:text-red-500 transition flex items-center gap-2">
+                    <i data-lucide="youtube" class="w-5 h-5"></i>
+                    <span class="hidden md:inline text-xs">YouTube</span>
+                </a>
+                <a href="mailto:zora.dansgroep@gmail.com" class="hover:text-white transition flex items-center gap-2">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                    <span class="hidden md:inline text-xs">zora.dansgroep@gmail.com</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL FORM -->
+    <div id="modal" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-[60]">
+        <div class="modal-overlay absolute w-full h-full bg-stone-900 opacity-80 cursor-pointer" onclick="closeModal()"></div>
+        <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-2xl z-50 overflow-y-auto max-h-[90vh]">
+            <div class="absolute top-0 right-0 cursor-pointer flex flex-col items-center mt-4 mr-4 text-white text-sm z-50" onclick="closeModal()">
+                <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path></svg>
+            </div>
+            <div class="modal-content py-4 text-left px-6">
+                <div class="flex justify-between items-center pb-3 border-b border-stone-200">
+                    <h3 class="text-2xl font-bold text-stone-900" id="modal-title">Sign Up</h3>
+                </div>
+                <form name="Trial Lesson" method="POST" class="mt-4" netlify>
+                    <!-- Required for Netlify to work -->
+                    <input type="hidden" name="form-name" value="Trial Lesson">
+                    <input type="hidden" name="language" id="form-lang" value="en">
+                    <!-- Your existing hidden field -->
+                    <input type="hidden" id="form-type" name="type" value="Sign Up">
+                    <div class="mb-4">
+                        <label class="block text-stone-700 text-sm font-bold mb-2" for="name" data-i18n="form_name">Name</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-stone-700 leading-tight focus:outline-none focus:shadow-outline" id="name" name="name" type="text" required placeholder="Name" data-placeholder-i18n="ph_name">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-stone-700 text-sm font-bold mb-2" for="phone" data-i18n="form_phone">Telephone</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-stone-700 leading-tight focus:outline-none focus:shadow-outline" id="phone" name="phone" type="tel" required placeholder="06 12345678" data-placeholder-i18n="ph_phone">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-stone-700 text-sm font-bold mb-2" for="group" data-i18n="form_group">Choose Group</label>
+                        <select class="shadow border rounded w-full py-2 px-3 text-stone-700 leading-tight focus:outline-none focus:shadow-outline" id="group" name="group">
+                            <option value="Friday Adults (19:00-21:00)" data-i18n="opt_fri">Friday Adults (19:00-21:00)</option>
+                            <option value="Sunday Kids (10:15-11:00)" data-i18n="opt_sun_kids">Sunday Kids (10:15-11:00)</option>
+                            <option value="Sunday Adults (11:00-13:00)" data-i18n="opt_sun_adults">Sunday Adults (11:00-13:00)</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-stone-700 text-sm font-bold mb-2" for="comment" data-i18n="form_comment">Comment (Optional)</label>
+                        <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-stone-700 leading-tight focus:outline-none focus:shadow-outline" id="comment" name="comment" rows="3"></textarea>
+                    </div>
+                    <div class="bg-blue-50 p-3 rounded mb-4 text-xs text-blue-800 flex gap-2">
+                        <i data-lucide="info" class="w-4 h-4"></i>
+                        <span data-i18n="form_disclaimer">You will be contacted ASAP (max 1 week).</span>
+                    </div>
+                    <div class="flex justify-end pt-2">
+                        <button type="button" class="px-4 bg-transparent p-3 rounded-lg text-stone-500 hover:bg-gray-100 hover:text-stone-400 mr-2" onclick="closeModal()" data-i18n="form_cancel">Cancel</button>
+                        <button type="submit" class="px-6 bg-red-600 p-3 rounded-lg text-white hover:bg-red-700 font-bold" data-i18n="form_submit">Send</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const customWidgetMessage = {
+            en: "",
+            bg: "",
+            nl: ""
+        };
+        // --- 1. MONTH VARIABLES ---
+        const monthsEN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const monthsBG = ["Януари", "Февруари", "Март", "Април", "Май", "Юни", "Юли", "Август", "Септември", "Октомври", "Ноември", "Декември"];
+        const monthsNL = ["Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December"];
+
+        // --- 2. EVENT DATA (BACKEND) ---
+        const eventsData = [
+            {
+                type: 'upcoming',
+                dates: { start: '22-12-2025', end: '05-01-2026' },
+                location: 'Nitsanim & Het Koorenhuis',
+                title: { en: 'Winter Break', bg: 'Зимна Ваканция', nl: 'Winterstop' },
+                desc: { 
+                    en: 'No rehearsals. We wish you warm, joyful Christmas days and a beautiful start to the New Year!', 
+                    bg: 'Няма да има репетиции. Желаем ви топли и светли празници!', 
+                    nl: 'Geen repetities. Wij wensen jullie warme kerstdagen en een mooi nieuwjaar!' 
+                }
+            },
+            {
+                type: 'upcoming',
+                dates: { start: '15-05-2026', end: '17-05-2026' },
+                location: 'München, Duitsland',
+                title: { en: 'Na Megdana Festival', bg: 'Събор "На мегдана"', nl: 'Na Megdana Festival' },
+                desc: { 
+                    en: 'Gathering "Na megdana na drugata Bulgaria" in Munich.', 
+                    bg: 'На мегдана на другата България - Мюнхен. Голям фолклорен събор.', 
+                    nl: 'Bijeenkomst "Op het plein van het andere Bulgarije" in München.' 
+                }
+            },
+            {
+                type: 'upcoming',
+                dates: { start: '06-06-2026', end: '06-06-2026' },
+                location: 'Diamanthorst 181A, Den Haag',
+                title: { en: 'School Celebration', bg: 'Празник на училището', nl: 'Schoolviering' },
+                desc: { 
+                    en: 'Celebration of 20 years since the founding of the Bulgarian School "St. Cyril and Methodius".', 
+                    bg: 'Честване на 20 години от основаването на Българското училище "Св. св. Кирил и Методий".', 
+                    nl: 'Viering van het 20-jarig jubileum van de Bulgaarse school "St. Cyril en Methodius".' 
+                }
+            },
+            {
+                type: 'past',
+                dates: { start: '14-11-2025', end: '14-11-2025' },
+                location: 'Amare, Den Haag',
+                title: { en: '#ShareAFolkSong', bg: '#ShareAFolkSong', nl: '#ShareAFolkSong' },
+                desc: { 
+                    en: 'A captivating workshop at Amare Theatre sharing the magic of Bulgarian folk dance.', 
+                    bg: 'Пленяващ уъркшоп в театър Амаре, потапящ публиката в магията на българския танц.', 
+                    nl: 'Een boeiende workshop in het Amare Theater over de magie van de Bulgaarse volksdans.' 
+                }
+            },
+            {
+                type: 'past',
+                dates: { start: '01-11-2025', end: '01-11-2025' },
+                location: 'Nitsanim, Genemuidenstraat 208A, Den Haag', 
+                title: { en: 'Party with Zora', bg: 'Вечеринка със Зора', nl: 'Feest met Zora' },
+                desc: { 
+                    en: 'Seminar with Dilyana Kurdova (16:30) and Party (19:00). Folklore, music, and fun.', 
+                    bg: 'Семинар с Диляна Курдова (16:30) и Вечеринка (19:00). Хора, музика и веселба.', 
+                    nl: 'Workshop met Dilyana Kurdova (16:30) en Feest (19:00). Folklore, muziek en plezier.' 
+                }
+            },
+            {
+                type: 'past',
+                dates: { start: '12-09-2025', end: '13-09-2025' },
+                location: 'Nitsanim, Genemuidenstraat 208A, Den Haag',
+                title: { en: 'Dance Seminar with Daniela Nyberg', bg: 'Танцов Семинар с Даниела Найберг', nl: 'Dansseminar met Daniela Nyberg' },
+                desc: { 
+                    en: 'Workshop with Dr. Daniela Ivanova-Nyberg, ethnochoreologist and choreographer.', 
+                    bg: 'Семинар с д-р Даниела Иванова-Найберг, етнохореолог и хореограф.', 
+                    nl: 'Workshop met Dr. Daniela Ivanova-Nyberg, etnochoreoloog en choreograaf.' 
+                }
+            },
+        ];
+
+        // --- 3. TRANSLATIONS ---
+        const translations = {
+            en: {
+                header_title: "ZORA <span class='block md:inline'>THE HAGUE</span>",
+                hero_subtitle: "Bulgarian Folk Dances in The Hague",
+                hero_title: "Dance with Heart,<br>Live Tradition.",
+                btn_trial: "Trial Lesson",
+                btn_signup: "Sign Up",
+                followers_label: "Followers on Facebook",
+                review_snippet: "\"Top community!\"",
+                about_title: "Welcome to the Zora Family",
+                about_text1: "A group for all lovers, dancers, or simply amateurs of Bulgarian folk dances and horo in The Hague, Netherlands.",
+                about_quote: "\"Outside it is cold, but inside our hall is full of warmth, coziness, and smiles.\"",
+                schedule_title: "Weekly Rehearsals",
+                day_friday: "Friday",
+                day_sunday: "Sunday",
+                
+                group_adults_title: "Adults Group",
+                group_adults_desc: "Regular rehearsals for all levels.",
+                group_kids_title: "Kids Group",
+                group_kids_desc: "Fun and steps for the little ones.",
+                group_mixed_title: "Adults Group",
+                group_mixed_desc: "Regular rehearsals for all levels.",
+
+                widget_loading: "Calculating next rehearsal...",
+                widget_today: "Today",
+                widget_tomorrow: "Tomorrow",
+                widget_next_fri: "Next Friday at 19:00",
+                widget_next_sun: "Next Sunday at 10:15",
+                widget_tonight: "Tonight at 19:00!",
+                events_upcoming: "Upcoming Events",
+                events_past: "Past Events",
+                form_name: "Name",
+                form_phone: "Telephone",
+                form_group: "Choose Group",
+                form_comment: "Comment (Optional)",
+                form_disclaimer: "We’ll get in touch with you as soon as possible, within 1 week at the latest.",
+                form_cancel: "Cancel",
+                form_submit: "Send Request",
+                modal_trial: "Trial Lesson",
+                modal_signup: "Sign Up",
+                opt_fri: "Friday Adults (19:00-21:00)",
+                opt_sun_kids: "Sunday Kids (10:15-11:00)",
+                opt_sun_adults: "Sunday Adults (11:00-13:00)",
+                ph_name: "Ivan Ivanov",
+                ph_phone: "06 12345678"
+            },
+            bg: {
+                header_title: "ЗОРА <span class='block md:inline'>ХАГА</span>",
+                hero_subtitle: "Български народни танци в Хага",
+                hero_title: "Танцувай със сърце,<br>Живей с традицията.",
+                btn_trial: "Пробна Репетиция",
+                btn_signup: "Записване",
+                followers_label: "Последователи във Facebook",
+                review_snippet: "\"Страхотна общност!\"",
+                about_title: "Добре дошли в семейството на ЗОРА",
+                about_text1: "Група за всичĸи любители, танцьори или просто аматьори в народните танци и хора̀ в Хага, Холандия.",
+                about_quote: "\"Навън е студено, но неделната ни зала е изпълнена с топлина, уют и усмивĸи!\"",
+                schedule_title: "Седмични репетиции",
+                day_friday: "Петък",
+                day_sunday: "Неделя",
+                
+                group_adults_title: "Група за възрастни",
+                group_adults_desc: "Редовни репетиции за всички нива.",
+                group_kids_title: "Детска група",
+                group_kids_desc: "Забавление и стъпки за най-малките.",
+                group_mixed_title: "Група за възрастни",
+                group_mixed_desc: "Редовни репетиции за всички нива.",
+
+                widget_loading: "Изчисляване...",
+                widget_today: "Днес",
+                widget_tomorrow: "Утре",
+                widget_next_fri: "Следващия петък от 19:00",
+                widget_next_sun: "Следващата неделя от 10:15",
+                widget_tonight: "Тази вечер от 19:00!",
+                events_upcoming: "Предстоящи събития",
+                events_past: "Минали събития",
+                form_name: "Име",
+                form_phone: "Телефон",
+                form_group: "Изберете група",
+                form_comment: "Коментар (незадължително)",
+                form_disclaimer: "Ще се свържем с вас възможно най-скоро, най-късно до 1 седмица.",
+                form_cancel: "Отказ",
+                form_submit: "Изпрати",
+                modal_trial: "Пробна Репетиция",
+                modal_signup: "Записване",
+                opt_fri: "Петък Възрастни (19:00-21:00)",
+                opt_sun_kids: "Неделя Деца (10:15-11:00)",
+                opt_sun_adults: "Неделя Възрастни (11:00-13:00)",
+                ph_name: "Иван Иванов",
+                ph_phone: "06 12345678"
+            },
+            nl: {
+                header_title: "ZORA <span class='block md:inline'>DEN HAAG</span>",
+                hero_subtitle: "Bulgaarse Volksdansen Den Haag",
+                hero_title: "Dans met je hart,<br>Beleef traditie.",
+                btn_trial: "Proefles",
+                btn_signup: "Inschrijven",
+                followers_label: "Volgers op Facebook",
+                review_snippet: "\"Top gemeenschap!\"",
+                about_title: "Welkom bij de Zora Familie",
+                about_text1: "Een groep voor alle liefhebbers, dansers of gewoon amateurs in Bulgaarse volksdansen en horo in Den Haag.",
+                about_quote: "\"Buiten is het koud, maar binnen is onze zaal vol warmte, gezelligheid en glimlachen.\"",
+                schedule_title: "Wekelijkse Repetities",
+                day_friday: "Vrijdag",
+                day_sunday: "Zondag",
+                
+                group_adults_title: "Volwassenen",
+                group_adults_desc: "Reguliere repetities voor alle niveaus.",
+                group_kids_title: "Kindergroep",
+                group_kids_desc: "Plezier en danspassen voor de kleintjes.",
+                group_mixed_title: "Volwassenen",
+                group_mixed_desc: "Reguliere repetities voor alle niveaus.",
+
+                widget_loading: "Volgende les berekenen...",
+                widget_today: "Vandaag",
+                widget_tomorrow: "Morgen",
+                widget_next_fri: "Aanstaande vrijdag om 19:00",
+                widget_next_sun: "Aanstaande zondag om 10:15",
+                widget_tonight: "Vanavond om 19:00!",
+                events_upcoming: "Komende Evenementen",
+                events_past: "Eerdere Evenementen",
+                form_name: "Naam",
+                form_phone: "Telefoonnummer",
+                form_group: "Kies Groep",
+                form_comment: "Opmerking (optioneel)",
+                form_disclaimer: "We nemen zo snel mogelijk contact met je op, uiterlijk binnen 1 week.",
+                form_cancel: "Annuleren",
+                form_submit: "Versturen",
+                modal_trial: "Proefles",
+                modal_signup: "Inschrijven",
+                opt_fri: "Vrijdag Volwassenen (19:00-21:00)",
+                opt_sun_kids: "Zondag Kinderen (10:15-11:00)",
+                opt_sun_adults: "Zondag Volwassenen (11:00-13:00)",
+                ph_name: "Jan Jansen",
+                ph_phone: "06 12345678"
+            }
+        };
+
+        // --- 4. FUNCTIONS ---
+        let currentLang = 'en';
+
+        function detectLanguage() {
+            try {
+                const lang = navigator.language || 'en';
+                const browserLang = lang.slice(0, 2).toLowerCase();
+                if (['bg', 'nl'].includes(browserLang)) return browserLang;
+            } catch (e) {
+                console.log(e);
+            }
+            return 'en';
+        }
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            
+            // Text Content
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    element.innerHTML = translations[lang][key];
+                }
+            });
+
+            // Input Placeholders
+            document.querySelectorAll('[data-placeholder-i18n]').forEach(element => {
+                const key = element.getAttribute('data-placeholder-i18n');
+                if (translations[lang][key]) {
+                    element.placeholder = translations[lang][key];
+                }
+            });
+
+            // Render Events
+            renderEvents(lang);
+
+            // Button Styles
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`btn-${lang}`);
+            if(activeBtn) activeBtn.classList.add('active');
+
+            document.getElementById('form-lang').value = lang;
+            
+            // Update Widget
+            updateNextClass();
+        }
+
+        function formatEventDate(start, end, lang) {
+            const parse = (d) => {
+                const parts = d.split('-');
+                return { 
+                    day: parseInt(parts[0]), // Removes leading zero (e.g. "09" -> 9)
+                    monthIndex: parseInt(parts[1]) - 1, 
+                    year: parts[2] 
+                };
+            };
+    
+            const s = parse(start);
+            const e = parse(end);
+
+            let monthsArr;
+            if(lang === 'bg') monthsArr = monthsBG;
+            else if(lang === 'nl') monthsArr = monthsNL;
+            else monthsArr = monthsEN;
+
+            if (start === end) {
+                // Same day: 9 March 2025
+                return `${s.day} ${monthsArr[s.monthIndex]} ${s.year}`;
+            } else {
+                if (s.year !== e.year) {
+                    // Different years: 22 Dec 2025 - 5 Jan 2026
+                    return `${s.day} ${monthsArr[s.monthIndex]} ${s.year} - ${e.day} ${monthsArr[e.monthIndex]} ${e.year}`;
+                } else {
+                    // Same year
+                    if (s.monthIndex === e.monthIndex) {
+                        // Same month: 12-13 September 2025
+                        return `${s.day}-${e.day} ${monthsArr[s.monthIndex]} ${s.year}`;
+                    } else {
+                        // Different month, same year: 30 Sep - 2 Oct 2025
+                        return `${s.day} ${monthsArr[s.monthIndex]} - ${e.day} ${monthsArr[e.monthIndex]} ${s.year}`;
+                    }
+                }
+            }
+        }
+
+        function renderEvents(lang) {
+            const upcomingContainer = document.getElementById('upcoming-events-container');
+            const pastContainer = document.getElementById('past-events-container');
+            
+            if(!upcomingContainer || !pastContainer) return;
+
+            upcomingContainer.innerHTML = '';
+            pastContainer.innerHTML = '';
+
+            const upcoming = eventsData.filter(e => e.type === 'upcoming').slice(0, 3);
+            const past = eventsData.filter(e => e.type === 'past').slice(0, 3);
+
+            const createEventHTML = (event, isUpcoming, isNearest) => {
+                const borderClass = (isUpcoming && isNearest) ? 'border-green-600' : 'border-stone-200';
+                const bgClass = (isUpcoming && isNearest) ? 'bg-stone-50' : 'bg-transparent border';
+                const dateStr = formatEventDate(event.dates.start, event.dates.end, lang);
+                
+                // Create Map Link
+                const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location)}`;
+
+                return `
+                <div class="${bgClass} p-6 ${isUpcoming ? 'border-l-4' : ''} ${borderClass} rounded">
+                    <p class="text-sm text-stone-500 font-bold mb-1">${dateStr}</p>
+                    <h4 class="text-lg font-bold mb-2">${event.title[lang]}</h4>
+                    <p class="text-stone-600 text-sm mb-2">${event.desc[lang]}</p>
+                    
+                    <!-- Clickable Location -->
+                    <a href="${mapUrl}" target="_blank" class="flex items-center gap-1 text-xs text-stone-400 hover:text-red-600 transition w-fit">
+                        <i data-lucide="map-pin" class="w-3 h-3"></i>
+                        <span>${event.location}</span>
+                    </a>
+                </div>
+                `;
+            };
+
+            upcoming.forEach((e, index) => upcomingContainer.innerHTML += createEventHTML(e, true, index === 0));
+            past.forEach(e => pastContainer.innerHTML += createEventHTML(e, false, false));
+            
+            if(typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function updateNextClass() {
+            const display = document.getElementById('next-class-display');
+            if(!display) return;
+
+            // 1. CHECK FOR CUSTOM OVERRIDE
+            // If the variable above has text, show it and stop calculation.
+            if (customWidgetMessage[currentLang] && customWidgetMessage[currentLang] !== "") {
+                display.innerText = customWidgetMessage[currentLang];
+                return; 
+            }
+
+            // 2. STANDARD CALCULATION LOGIC
+            const now = new Date();
+            const day = now.getDay(); 
+            const hour = now.getHours();
+            const t = translations[currentLang];
+            let message = "";
+
+            if (day < 5 || (day === 5 && hour < 19)) {
+                if (day === 5) message = t.widget_tonight;
+                else message = t.widget_next_fri;
+            } else if ((day === 5 && hour >= 19) || day === 6 || (day === 0 && hour < 10)) {
+                 if (day === 0) message = `${t.widget_today} 10:15`;
+                 else message = t.widget_next_sun;
+            } else {
+                message = t.widget_next_fri;
+            }
+            display.innerText = message;
+        }
+
+        // Modal Logic
+        var modal = document.getElementById('modal');
+        var body = document.querySelector('body');
+
+        function openModal(type) {
+            const t = translations[currentLang];
+            const titleKey = type === 'Trial Lesson' ? 'modal_trial' : 'modal_signup';
+            document.getElementById('modal-title').innerText = t[titleKey];
+            document.getElementById('form-type').value = type;
+
+            modal.classList.remove('opacity-0');
+            modal.classList.remove('pointer-events-none');
+            body.classList.add('modal-active');
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0');
+            modal.classList.add('pointer-events-none');
+            body.classList.remove('modal-active');
+        }
+
+        document.onkeydown = function(evt) {
+            evt = evt || window.event;
+            var isEscape = false;
+            if ("key" in evt) isEscape = (evt.key === "Escape" || evt.key === "Esc");
+            else isEscape = (evt.keyCode === 27);
+            if (isEscape && body.classList.contains('modal-active')) closeModal();
+        };
+
+        // --- 5. INITIALIZATION (On Load) ---
+        // This wrapper ensures HTML is loaded before JS runs
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Init Icons
+            if(typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+
+            // 2. Detect and Apply Language
+            const detected = detectLanguage();
+            changeLanguage(detected);
+        });
+
+    </script>
+</body>
+</html>
