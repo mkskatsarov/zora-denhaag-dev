@@ -5,112 +5,140 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rehearsals - Zora Den Haag</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Montserrat', sans-serif; }
-        h2, h3 { font-family: 'Merriweather', serif; }
-        .shevitsa-strip { height: 12px; width: 100%; background-image: linear-gradient(45deg, #D62612 25%, transparent 25%), linear-gradient(-45deg, #D62612 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #00966E 75%), linear-gradient(-45deg, transparent 75%, #00966E 75%); background-size: 20px 20px; background-color: #fff; border-bottom: 1px solid #eee; }
-        .card { background: white; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-col: column; height: 100%; text-align: center; }
-        .card-header { padding: 1.5rem; color: white; text-transform: uppercase; font-weight: bold; }
-        .card-body { padding: 2rem; flex-grow: 1; }
+        h1, h2 { font-family: 'Merriweather', serif; }
+        .card-shadow { box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1); }
     </style>
 </head>
-<body class="bg-stone-50">
-    <div class="shevitsa-strip fixed top-0 z-50"></div>
-    
-    <nav class="bg-white mt-[12px] border-b border-stone-100 py-4 px-6 flex justify-between items-center">
-        <a href="index.html"><img src="header_logo.png" class="h-12 w-auto"></a>
-        <a href="index.html" class="text-stone-600 font-bold uppercase text-sm">← Back Home</a>
-    </nav>
+<body class="bg-stone-50 text-stone-800">
 
-    <main class="max-w-6xl mx-auto px-4 py-16">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold mb-4" data-i18n="title">Weekly Rehearsals</h2>
+    <div class="max-w-6xl mx-auto px-4 py-16">
+        <div class="text-center mb-16">
+            <h1 class="text-4xl font-bold mb-4" data-i18n="title">Weekly Rehearsals</h1>
             <div class="h-1 w-24 bg-red-600 mx-auto"></div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
             <!-- Friday Adults (Green) -->
-            <div class="card">
-                <div class="card-header bg-[#2d7a4d]">
-                    <div data-i18n="fri">Friday</div>
-                    <div class="text-sm opacity-90">19:00 - 21:00</div>
+            <div class="bg-white rounded overflow-hidden card-shadow">
+                <div class="bg-emerald-700 text-white p-6 text-center">
+                    <h3 class="text-lg font-bold uppercase" data-i18n="fri">Friday</h3>
+                    <p class="font-mono">19:00 - 21:00</p>
                 </div>
-                <div class="card-body">
-                    <h3 class="text-xl font-bold mb-2" data-i18n="grp_adults">Adults Group</h3>
-                    <p class="text-stone-500 text-sm mb-4" data-i18n="desc_adults">Regular rehearsals for all levels.</p>
-                    <div class="text-sm font-bold">Het Koorenhuis</div>
-                    <div class="text-stone-400 text-xs">Prinsengracht 27, Hall 1.16</div>
+                <div class="p-8">
+                    <h4 class="text-xl font-bold mb-2" data-i18n="adults">Adults Group</h4>
+                    <p class="text-stone-500 mb-6" data-i18n="desc_reg">Regular rehearsals for all levels.</p>
+                    <div class="text-sm">
+                        <p class="font-bold">Het Koorenhuis</p>
+                        <p class="text-stone-500">Prinsengracht 27</p>
+                        <p class="text-stone-400">Hall 1.16</p>
+                    </div>
                 </div>
             </div>
 
             <!-- Sunday Adults (Red) -->
-            <div class="card">
-                <div class="card-header bg-[#b22222]">
-                    <div data-i18n="sun">Sunday</div>
-                    <div class="text-sm opacity-90">11:00 - 13:00</div>
+            <div class="bg-white rounded overflow-hidden card-shadow">
+                <div class="bg-red-700 text-white p-6 text-center">
+                    <h3 class="text-lg font-bold uppercase" data-i18n="sun">Sunday</h3>
+                    <p class="font-mono">11:00 - 13:00</p>
                 </div>
-                <div class="card-body">
-                    <h3 class="text-xl font-bold mb-2" data-i18n="grp_adults">Adults Group</h3>
-                    <p class="text-stone-500 text-sm mb-4" data-i18n="desc_adults">Regular rehearsals for all levels.</p>
-                    <div class="text-sm font-bold">Nitsanim</div>
-                    <div class="text-stone-400 text-xs">Genemuidenstraat 208A</div>
+                <div class="p-8">
+                    <h4 class="text-xl font-bold mb-2" data-i18n="adults">Adults Group</h4>
+                    <p class="text-stone-500 mb-6" data-i18n="desc_reg">Regular rehearsals for all levels.</p>
+                    <div class="text-sm">
+                        <p class="font-bold">Nitsanim</p>
+                        <p class="text-stone-500">Genemuidenstraat 208A</p>
+                    </div>
                 </div>
             </div>
 
-            <!-- Sunday Kids (Orange) -->
-            <div class="card">
-                <div class="card-header bg-[#e67e22]">
-                    <div data-i18n="sun">Sunday</div>
-                    <div class="text-sm opacity-90">10:15 - 11:00</div>
+            <!-- Sunday Kids (Yellow/Orange) -->
+            <div class="bg-white rounded overflow-hidden card-shadow">
+                <div class="bg-amber-500 text-white p-6 text-center">
+                    <h3 class="text-lg font-bold uppercase" data-i18n="sun">Sunday</h3>
+                    <p class="font-mono">10:15 - 11:00</p>
                 </div>
-                <div class="card-body">
-                    <h3 class="text-xl font-bold mb-2" data-i18n="grp_kids">Kids Group</h3>
-                    <p class="text-stone-500 text-sm mb-4" data-i18n="desc_kids">Fun and steps for the youngest ones.</p>
-                    <div class="text-sm font-bold">Nitsanim</div>
-                    <div class="text-stone-400 text-xs">Genemuidenstraat 208A</div>
+                <div class="p-8">
+                    <h4 class="text-xl font-bold mb-2" data-i18n="kids">Kids Group</h4>
+                    <p class="text-stone-500 mb-6" data-i18n="desc_kids">Fun and steps for the little ones.</p>
+                    <div class="text-sm">
+                        <p class="font-bold">Nitsanim</p>
+                        <p class="text-stone-500">Genemuidenstraat 208A</p>
+                    </div>
+                    <p class="mt-4 text-xs text-red-600 italic" data-i18n="kids_note">Note: Includes age, level, and parent attendance details.</p>
                 </div>
             </div>
 
             <!-- Sunday Beginners (Dark Blue) -->
-            <div class="card">
-                <div class="card-header bg-[#2c3e50]">
-                    <div data-i18n="sun">Sunday</div>
-                    <div class="text-sm opacity-90">11:15 - 12:15</div>
+            <div class="bg-white rounded overflow-hidden card-shadow">
+                <div class="bg-slate-800 text-white p-6 text-center">
+                    <h3 class="text-lg font-bold uppercase" data-i18n="sun">Sunday</h3>
+                    <p class="font-mono">11:15 - 12:15</p>
                 </div>
-                <div class="card-body">
-                    <h3 class="text-xl font-bold mb-2" data-i18n="grp_beginners">Beginners Course</h3>
-                    <p class="text-stone-500 text-sm mb-4" data-i18n="desc_beginners">Foundational steps for new dancers.</p>
-                    <div class="text-sm font-bold">Het Koorenhuis</div>
-                    <div class="text-stone-400 text-xs">Prinsengracht 27, Hall 1.16</div>
+                <div class="p-8">
+                    <h4 class="text-xl font-bold mb-2" data-i18n="beginners">Beginners Course</h4>
+                    <p class="text-stone-500 mb-6" data-i18n="desc_beg">Regular rehearsals for all levels.</p>
+                    <div class="text-sm">
+                        <p class="font-bold">Het Koorenhuis</p>
+                        <p class="text-stone-500">Prinsengracht 27</p>
+                        <p class="text-stone-400">Hall 1.16</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </main>
+
+        <div class="mt-12 text-center">
+            <a href="/" class="text-red-600 font-bold hover:underline">← Back to Home</a>
+        </div>
+    </div>
 
     <script>
         const translations = {
-            en: {
-                title: "Weekly Rehearsals", fri: "Friday", sun: "Sunday",
-                grp_adults: "Adults Group", grp_kids: "Kids Group", grp_beginners: "Beginners Course",
-                desc_adults: "Regular rehearsals for all levels.", desc_kids: "Fun and steps for the youngest ones.", desc_beginners: "Foundational steps for new dancers."
-            },
             bg: {
-                title: "Седмични репетиции", fri: "Петък", sun: "Неделя",
-                grp_adults: "Група за възрастни", grp_kids: "Детска група", grp_beginners: "Курс за начинаещи",
-                desc_adults: "Редовни репетиции за всички нива.", desc_kids: "Забавление и стъпки за най-малките.", desc_beginners: "Основни стъпки за нови танцьори."
+                title: "Седмични репетиции",
+                fri: "Петък", sun: "Неделя",
+                adults: "Група за възрастни",
+                kids: "Детска група",
+                beginners: "Курс за начинаещи",
+                desc_reg: "Редовни репетиции за всички нива.",
+                desc_kids: "Забавление и стъпки за най-малките.",
+                desc_beg: "Редовни репетиции за всички нива.",
+                kids_note: "Описанието трябва да включва възраст, ниво и присъствие на родител."
+            },
+            en: {
+                title: "Weekly Rehearsals",
+                fri: "Friday", sun: "Sunday",
+                adults: "Adults Group",
+                kids: "Kids Group",
+                beginners: "Beginners Course",
+                desc_reg: "Regular rehearsals for all levels.",
+                desc_kids: "Fun and steps for the little ones.",
+                desc_beg: "Regular rehearsals for all levels.",
+                kids_note: "Description should include age, level, and parent attendance."
             },
             nl: {
-                title: "Wekelijkse Repetities", fri: "Vrijdag", sun: "Zondag",
-                grp_adults: "Volwassenen", grp_kids: "Kindergroep", grp_beginners: "Cursus voor beginners",
-                desc_adults: "Reguliere repetities voor alle niveaus.", desc_kids: "Plezier en danspassen voor de kleintjes.", desc_beginners: "Basisstappen voor nieuwe dansers."
+                title: "Wekelijkse Repetities",
+                fri: "Vrijdag", sun: "Zondag",
+                adults: "Volwassenengroep",
+                kids: "Kindergroep",
+                beginners: "Cursus voor beginners",
+                desc_reg: "Reguliere repetities voor alle niveaus.",
+                desc_kids: "Plezier en passen voor de kleintjes.",
+                desc_beg: "Reguliere repetities voor alle niveaus.",
+                kids_note: "Beschrijving bevat leeftijd, niveau en aanwezigheid van ouders."
             }
         };
 
-        const lang = localStorage.getItem('preferredLang') || 'en';
+        // Logic to detect lang from URL or default to BG
+        const params = new URLSearchParams(window.location.search);
+        const lang = params.get('lang') || 'bg';
+        
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
-            if (translations[lang][key]) el.innerHTML = translations[lang][key];
+            el.innerText = translations[lang][key];
         });
     </script>
 </body>
