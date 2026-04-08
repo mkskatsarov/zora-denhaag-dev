@@ -1,181 +1,193 @@
---- START OF FILE index.html ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zora The Hague</title>
+    <title>Zora - Bulgarian Folk Dances</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <link rel="icon" type="image/png" href="zora-tab-logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,700;1,400&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
     <style>
         body { font-family: 'Montserrat', sans-serif; }
         h1, h2, h3, h4 { font-family: 'Merriweather', serif; }
-        .shevitsa-strip {
-            height: 12px; width: 100%; position: fixed; top: 0; z-index: 60;
-            background-image: linear-gradient(45deg, #D62612 25%, transparent 25%), linear-gradient(-45deg, #D62612 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #00966E 75%), linear-gradient(-45deg, transparent 75%, #00966E 75%);
-            background-size: 20px 20px; background-color: #fff; border-bottom: 1px solid #eee;
-        }
-        .lang-btn { background: white; border: 1px solid #d1d5db; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; transition: 0.2s; }
-        .lang-btn.active { background: #D62612; color: white; border-color: #D62612; }
-        .nav-link { font-size: 0.8rem; font-weight: 600; color: #4b5563; text-transform: uppercase; letter-spacing: 0.05em; transition: color 0.2s; }
+        .shevitsa-strip { height: 12px; width: 100%; background-image: linear-gradient(45deg, #D62612 25%, transparent 25%), linear-gradient(-45deg, #D62612 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #00966E 75%), linear-gradient(-45deg, transparent 75%, #00966E 75%); background-size: 20px 20px; background-color: #fff; border-bottom: 1px solid #eee; }
+        .lang-btn { background-color: #ffffff; border: 1px solid #d1d5db; color: #374151; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; transition: all 0.2s ease; }
+        .lang-btn.active { background-color: #D62612 !important; color: #ffffff !important; border-color: #D62612 !important; }
+        .nav-link { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #444; transition: color 0.2s; }
         .nav-link:hover { color: #D62612; }
     </style>
 </head>
 <body class="bg-stone-50 text-stone-800">
 
-    <div class="shevitsa-strip"></div>
+    <div class="shevitsa-strip fixed top-0 z-50"></div>
 
-    <!-- Navigation -->
-    <nav class="bg-white fixed w-full z-50 top-[12px] border-b border-stone-100">
-        <div class="max-w-7xl mx-auto px-4 h-32 flex flex-col items-center justify-center">
-            <!-- Logo Top -->
-            <a href="index.html" class="mb-4">
-                <img src="header_logo.png" alt="Zora Logo" class="h-16 md:h-20">
-            </a>
-            <!-- Links and Lang Switcher -->
-            <div class="flex items-center justify-between w-full">
-                <div class="hidden md:flex space-x-6">
-                    <a href="#about" class="nav-link" data-i18n="nav_about">About</a>
-                    <a href="rehearsals.html" class="nav-link" data-i18n="nav_rehearsals">Rehearsals</a>
-                    <a href="#events" class="nav-link" data-i18n="nav_events">Events</a>
-                    <a href="#" class="nav-link" data-i18n="nav_prices">Prices</a>
-                    <a href="#" class="nav-link" data-i18n="nav_contact">Contact</a>
-                </div>
-                <div class="flex space-x-1">
-                    <button onclick="changeLanguage('bg')" id="btn-bg" class="lang-btn">BG</button>
-                    <button onclick="changeLanguage('en')" id="btn-en" class="lang-btn">EN</button>
-                    <button onclick="changeLanguage('nl')" id="btn-nl" class="lang-btn">NL</button>
+    <!-- NEW NAVIGATION (Based on Header_navigation_with_logo_on_homepage.png) -->
+    <nav class="bg-white fixed w-full z-40 top-[12px] border-b border-stone-100">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-col items-center py-2">
+                <!-- Logo -->
+                <a href="index.html">
+                    <img src="header_logo.png" alt="Zora Logo" class="h-20 w-auto mb-2">
+                </a>
+                
+                <!-- Links & Lang -->
+                <div class="flex items-center justify-between w-full max-w-4xl border-t border-stone-50 pt-2">
+                    <div class="flex gap-6">
+                        <a href="index.html" class="nav-link" data-i18n="nav_home">Home</a>
+                        <a href="rehearsals.html" class="nav-link" data-i18n="nav_rehearsals">Rehearsals</a>
+                    </div>
+                    
+                    <div class="flex items-center space-x-1">
+                        <button onclick="changeLanguage('bg')" class="lang-btn" id="btn-bg">BG</button>
+                        <button onclick="changeLanguage('en')" class="lang-btn" id="btn-en">EN</button>
+                        <button onclick="changeLanguage('nl')" class="lang-btn" id="btn-nl">NL</button>
+                    </div>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Hero -->
-    <header class="pt-56 pb-20 text-center">
-        <h1 class="text-4xl md:text-6xl font-bold mb-6" data-i18n="hero_title">Dance with Heart, Live Tradition.</h1>
-        <div class="inline-flex items-center bg-white border px-6 py-2 rounded-full shadow-sm mb-8">
-            <span class="flex h-2 w-2 bg-red-500 rounded-full mr-3 animate-pulse"></span>
-            <span id="next-class-display" class="text-sm font-medium">Loading...</span>
-        </div>
-        <div>
-            <button onclick="openModal('Trial Lesson')" class="bg-red-600 text-white px-10 py-4 rounded font-bold uppercase hover:bg-red-700 transition" data-i18n="btn_trial">Trial Lesson</button>
+    <!-- Hero Section -->
+    <header class="relative pt-48 pb-20 text-center">
+        <div class="max-w-6xl mx-auto px-4 relative z-10">
+            <p class="text-green-700 font-semibold tracking-widest uppercase text-sm mb-4" data-i18n="hero_subtitle">Bulgarian Folk Dances</p>
+            <h1 class="text-5xl md:text-7xl font-bold text-stone-900 mb-8" data-i18n="hero_title">Dance with Heart, Live Tradition.</h1>
+            
+            <div class="inline-flex items-center bg-white border border-stone-200 shadow-xl rounded-full px-6 py-3 mb-10">
+                <span class="flex h-3 w-3 relative mr-3"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span></span>
+                <span class="text-stone-600 font-medium text-sm" id="next-class-display">Loading...</span>
+            </div>
+
+            <div class="flex justify-center">
+                <button onclick="location.href='rehearsals.html'" class="bg-red-600 text-white px-8 py-4 rounded shadow-lg hover:bg-red-700 transition font-bold uppercase tracking-wide transform hover:scale-105" data-i18n="btn_trial">Trial Lesson</button>
+            </div>
         </div>
     </header>
 
-    <!-- About -->
-    <section id="about" class="py-20 bg-white">
-        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row gap-12 items-center">
-            <div class="md:w-1/2">
-                <img src="zora-dancers.png" class="rounded shadow-xl">
-            </div>
-            <div class="md:w-1/2">
-                <h2 class="text-3xl font-bold mb-6 flex flex-wrap items-center gap-2">
-                    <span data-i18n="about_welcome">Welcome to</span>
-                    <img src="Zora_logo_instead_of_text.png" alt="Zora" class="h-10 inline-block">
-                </h2>
-                <p class="text-lg text-stone-600 mb-6" data-i18n="about_text1">A group for all lovers of Bulgarian folk dances in The Hague.</p>
-                <p class="italic border-l-4 border-red-500 pl-4 text-stone-500" data-i18n="about_quote">"Outside it is cold, but inside our hall is full of warmth."</p>
+    <!-- About Section with Inline Logo -->
+    <section class="py-20 bg-white">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row gap-12 items-center">
+                <div class="w-full md:w-1/2">
+                    <img src="zora-dancers.png" alt="Zora Dancers" class="rounded-lg shadow-xl">
+                </div>
+                <div class="w-full md:w-1/2">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6 flex flex-wrap items-center gap-2">
+                        <span data-i18n="about_welcome">Welcome to the family of</span>
+                        <img src="Zora_logo_instead_of_text.png" alt="Zora" class="h-12 w-auto inline-block">
+                    </h2>
+                    <p class="text-lg text-stone-600 mb-6 leading-relaxed" data-i18n="about_text1">
+                        A group for all lovers, dancers, or simply amateurs of Bulgarian folk dances and horo in The Hague.
+                    </p>
+                    <p class="text-lg text-stone-600 mb-8 leading-relaxed italic border-l-4 border-red-500 pl-4" data-i18n="about_quote">
+                        "Outside it is cold, but inside our hall is full of warmth, coziness, and smiles."
+                    </p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Reviews Section -->
-    <section class="py-20 bg-stone-900 text-white">
+    <!-- Reviews Section (Based on Reviews_on_Homepage.png) -->
+    <section class="py-20 bg-[#1a2433] text-white">
         <div class="max-w-6xl mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
                 <!-- Review 1 -->
-                <div>
-                    <i data-lucide="quote" class="w-10 h-10 text-red-600 mx-auto mb-4"></i>
+                <div class="text-center">
+                    <div class="text-red-500 text-6xl font-serif mb-4">“</div>
                     <h4 class="text-xl font-bold mb-2">Penka Ivanova</h4>
-                    <p class="text-stone-400 italic" data-i18n="rev_1">"The best place to find Bulgarian community and spirit in the Netherlands."</p>
+                    <p class="text-stone-300 italic" data-i18n="review_1">"I found a second family here. The energy and the dances keep me young and happy!"</p>
                 </div>
                 <!-- Review 2 -->
-                <div>
-                    <i data-lucide="quote" class="w-10 h-10 text-red-600 mx-auto mb-4"></i>
+                <div class="text-center">
+                    <div class="text-red-500 text-6xl font-serif mb-4">“</div>
                     <h4 class="text-xl font-bold mb-2">Ivan Ivanov</h4>
-                    <p class="text-stone-400 italic" data-i18n="rev_2">"Professional choreographers and a very welcoming atmosphere for beginners."</p>
+                    <p class="text-stone-300 italic" data-i18n="review_2">"A perfect way to stay connected to my Bulgarian roots while living in the Netherlands."</p>
                 </div>
                 <!-- Review 3 -->
-                <div>
-                    <i data-lucide="quote" class="w-10 h-10 text-red-600 mx-auto mb-4"></i>
+                <div class="text-center">
+                    <div class="text-red-500 text-6xl font-serif mb-4">“</div>
                     <h4 class="text-xl font-bold mb-2">Ivanka Penkova</h4>
-                    <p class="text-stone-400 italic" data-i18n="rev_3">"My kids love the Sunday classes! It's a great way to keep our traditions alive."</p>
+                    <p class="text-stone-300 italic" data-i18n="review_3">"The teachers are patient and the atmosphere is always welcoming. Highly recommend!"</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-white border-t py-12">
-        <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-sm text-stone-500">
-            <p>&copy; 2026 Zora Den Haag</p>
-            <div class="flex gap-6 mt-4 md:mt-0">
-                <a href="#" class="hover:text-red-600">Facebook</a>
-                <a href="#" class="hover:text-red-600">Instagram</a>
-                <a href="mailto:zora.dansgroep@gmail.com">zora.dansgroep@gmail.com</a>
-            </div>
-        </div>
+    <footer class="bg-stone-900 text-stone-500 py-8 text-center text-xs">
+        <p>&copy; 2025 Zora Den Haag</p>
     </footer>
 
-    <!-- Scripts (Same logic as your original, updated translations) -->
     <script>
         const translations = {
             en: {
-                nav_about: "About", nav_rehearsals: "Rehearsals", nav_events: "Events", nav_prices: "Prices", nav_contact: "Contact",
-                hero_title: "Dance with Heart, Live Tradition.", btn_trial: "Trial Lesson",
-                about_welcome: "Welcome to", about_text1: "A group for all lovers, dancers, or simply amateurs of Bulgarian folk dances and horo in The Hague.",
+                nav_home: "Home", nav_rehearsals: "Rehearsals",
+                hero_subtitle: "Bulgarian Folk Dances in The Hague",
+                hero_title: "Dance with Heart, Live Tradition.",
+                btn_trial: "Trial Lesson",
+                about_welcome: "Welcome to the family of",
+                about_text1: "A group for all lovers, dancers, or simply amateurs of Bulgarian folk dances and horo in The Hague.",
                 about_quote: "\"Outside it is cold, but inside our hall is full of warmth, coziness, and smiles.\"",
-                rev_1: "The best place to find Bulgarian community and spirit in the Netherlands.",
-                rev_2: "Professional choreographers and a very welcoming atmosphere for beginners.",
-                rev_3: "My kids love the Sunday classes! It's a great way to keep our traditions alive.",
-                widget_next_fri: "Next Friday at 19:00", widget_next_sun: "Next Sunday at 10:15",
+                review_1: "\"I found a second family here. The energy and the dances keep me young and happy!\"",
+                review_2: "\"A perfect way to stay connected to my Bulgarian roots while living in the Netherlands.\"",
+                review_3: "\"The teachers are patient and the atmosphere is always welcoming. Highly recommend!\"",
+                widget_tonight: "Tonight at 19:00!", widget_next_fri: "Next Friday at 19:00", widget_next_sun: "Next Sunday at 10:15", widget_today: "Today"
             },
             bg: {
-                nav_about: "ЗА ЗОРА", nav_rehearsals: "РЕПЕТИЦИИ", nav_events: "СЪБИТИЯ", nav_prices: "ЦЕНИ", nav_contact: "КОНТАКТИ",
-                hero_title: "Танцувай със сърце, Живей с традицията.", btn_trial: "Пробна Репетиция",
-                about_welcome: "Добре дошли в", about_text1: "Група за всички любители, танцьори или просто аматьори в народните танци в Хага.",
-                about_quote: "\"Навън е студено, но нашата зала е изпълнена с топлина, уют и усмивки.\"",
-                rev_1: "Най-доброто място да откриеш българска общност и дух в Холандия.",
-                rev_2: "Професионални хореографи и много приветлива атмосфера за начинаещи.",
-                rev_3: "Децата ми обожават неделните часове! Чудесен начин да запазим традициите си.",
-                widget_next_fri: "Следващия петък от 19:00", widget_next_sun: "Следващата неделя от 10:15",
+                nav_home: "Начало", nav_rehearsals: "Репетиции",
+                hero_subtitle: "Български народни танци в Хага",
+                hero_title: "Танцувай със сърце, живей с традицията.",
+                btn_trial: "Пробна Репетиция",
+                about_welcome: "Добре дошли в семейството на",
+                about_text1: "Група за всички любители, танцьори или просто аматьори в народните танци в Хага.",
+                about_quote: "\"Навън е студено, но в залата ни е пълно с топлина, уют и усмивки!\"",
+                review_1: "\"Тук намерих второ семейство. Енергията и танците ме правят щастлива!\"",
+                review_2: "\"Идеален начин да поддържам връзка с корените си, докато живея в Нидерландия.\"",
+                review_3: "\"Преподавателите са търпеливи, а атмосферата е винаги гостоприемна. Силно препоръчвам!\"",
+                widget_tonight: "Тази вечер от 19:00!", widget_next_fri: "Следващия петък от 19:00", widget_next_sun: "Следващата неделя от 10:15", widget_today: "Днес"
             },
             nl: {
-                nav_about: "Over Ons", nav_rehearsals: "Repetities", nav_events: "Evenementen", nav_prices: "Prijzen", nav_contact: "Contact",
-                hero_title: "Dans met je hart, beleef traditie.", btn_trial: "Proefles",
-                about_welcome: "Welkom bij", about_text1: "Een groep voor alle liefhebbers van Bulgaarse volksdansen in Den Haag.",
-                about_quote: "\"Buiten is het koud, maar binnen is onze zaal vol warmte en glimlachen.\"",
-                rev_1: "De beste plek om de Bulgaarse gemeenschap en geest in Nederland te vinden.",
-                rev_2: "Professionele choreografen en een zeer gastvrije sfeer voor beginners.",
-                rev_3: "Mijn kinderen zijn dol op de zondaglessen! Een geweldige manier om tradities levend te houden.",
-                widget_next_fri: "Aanstaande vrijdag om 19:00", widget_next_sun: "Aanstaande zondag om 10:15",
+                nav_home: "Home", nav_rehearsals: "Repetities",
+                hero_subtitle: "Bulgaarse Volksdansen in Den Haag",
+                hero_title: "Dans met je hart, beleef traditie.",
+                btn_trial: "Proefles",
+                about_welcome: "Welkom bij de familie van",
+                about_text1: "Een groep voor alle liefhebbers, dansers of amateurs van Bulgaarse volksdansen in Den Haag.",
+                about_quote: "\"Buiten is het koud, maar binnen is onze zaal vol warmte en gezelligheid.\"",
+                review_1: "\"Ik heb hier een tweede familie gevonden. De dansen maken me gelukkig!\"",
+                review_2: "\"Een perfecte manier om verbonden te blijven met mijn Bulgaarse roots.\"",
+                review_3: "\"De docenten zijn geduldig en de sfeer is altijd gastvrij. Een aanrader!\"",
+                widget_tonight: "Vanavond om 19:00!", widget_next_fri: "Aanstaande vrijdag om 19:00", widget_next_sun: "Aanstaande zondag om 10:15", widget_today: "Vandaag"
             }
         };
 
-        let currentLang = 'bg';
         function changeLanguage(lang) {
-            currentLang = lang;
+            localStorage.setItem('preferredLang', lang);
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if(translations[lang][key]) el.innerText = translations[lang][key];
+                if (translations[lang][key]) el.innerHTML = translations[lang][key];
             });
-            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('btn-' + lang).classList.add('active');
-            updateNextClass();
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${lang}`).classList.add('active');
+            updateNextClass(lang);
         }
 
-        function updateNextClass() {
+        function updateNextClass(lang) {
             const now = new Date();
             const day = now.getDay();
-            const display = document.getElementById('next-class-display');
-            if (day < 5) display.innerText = translations[currentLang].widget_next_fri;
-            else display.innerText = translations[currentLang].widget_next_sun;
+            const hour = now.getHours();
+            const t = translations[lang];
+            let msg = "";
+            if (day < 5 || (day === 5 && hour < 19)) msg = day === 5 ? t.widget_tonight : t.widget_next_fri;
+            else if (day === 0 && hour < 10) msg = `${t.widget_today} 10:15`;
+            else msg = t.widget_next_sun;
+            document.getElementById('next-class-display').innerText = msg;
         }
 
-        window.onload = () => { lucide.createIcons(); changeLanguage('bg'); };
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('preferredLang') || 'en';
+            changeLanguage(savedLang);
+        });
     </script>
 </body>
 </html>
